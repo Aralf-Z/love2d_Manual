@@ -1,4 +1,4 @@
-Tween = require("tween")--和教程的tween似乎不一样
+Tween = require("tween")
 
 local screenWidth = 800
 local screenHeight = 600
@@ -13,6 +13,8 @@ function love.load()
         v = 200,
         a = 50,
     }
+
+    ball.tween =Tween.new(2, ball, {posX = 500, posY = 500 },"inElastic")
 end
 
 function love.update(dt)
@@ -25,6 +27,7 @@ function love.update(dt)
         ball.v = ball.v + ball.a * dt
         ball.posX = ball.posX + dt * ball.v
     elseif "tween" == ball.mode then
+        ball.tween:update(dt)
     end
 
     if ball.posX < 0 then
@@ -51,6 +54,7 @@ function love.mousepressed(x, y, button, istouch, presses)
         ball.mode = "acceleration"
     elseif 3 == button then --middle
         ball.mode = "tween"
+        ball.tween:reset()
     end
 end
 
